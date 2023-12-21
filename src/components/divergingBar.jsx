@@ -180,14 +180,16 @@ function DivergingBar(props) {
   const makeDataArr = (rawData, currentDate) => {
     setData((prevData) => {
       let tmpData = [...prevData];
-      const currentClock =
-        currentDate.getHours().toString() +
-        ':' +
-        currentDate.getMinutes().toString();
+      let min = currentDate.getMinutes().toString();
+
+      if (min.length === 1) {
+        min = '0' + min;
+      }
+      const currentClock = currentDate.getHours().toString() + ':' + min;
+
       if (tmpData.length === 4) {
         tmpData.shift();
       }
-
       let tmpObject = {
         time: currentClock,
         success: rawData.success,

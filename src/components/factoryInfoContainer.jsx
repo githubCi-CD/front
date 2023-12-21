@@ -40,7 +40,7 @@ function FactoryInfoContainer(props) {
 
   // 공장id로 재고현황 가져오기
   const getStockData = async (id) => {
-    if (id !== undefined) {
+    if (id !== undefined && id !== null) {
       const url =
         process.env.REACT_APP_MATERIALS_API_URL + '/storage?factoryId=' + id;
       try {
@@ -61,7 +61,7 @@ function FactoryInfoContainer(props) {
   };
   // 공장id로 공장의 자본현황 가져오기
   const getFactoryInfo = async (id) => {
-    if (id !== undefined) {
+    if (id !== undefined && id !== null) {
       const url = process.env.REACT_APP_FACTORY_API_URL + '/factory/' + id;
       try {
         const response = await axios.get(url);
@@ -101,7 +101,6 @@ function FactoryInfoContainer(props) {
 
   // 재료 구입하는 api
   const sendOrder = async () => {
-    console.log('구입했다', fId);
     const url =
       process.env.REACT_APP_FACTORY_API_URL + '/factory/' + fId + '/buyOrigin';
     try {
@@ -199,7 +198,6 @@ function FactoryInfoContainer(props) {
         name: addOrigin.name,
         price: Number(addOrigin.price),
       });
-
       setTimeout(() => {
         getStockData();
       }, 100);

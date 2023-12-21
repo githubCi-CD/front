@@ -16,10 +16,14 @@ function Home() {
     },
     { 자본: 0 },
   ]);
-  const [fId, setFId] = useState(0);
+  const [fId, setFId] = useState();
 
   useEffect(() => {
     getFactory();
+    const intervalGetFactory = setInterval(() => {
+      getFactory();
+    }, 50000);
+    return () => clearInterval(intervalGetFactory);
   }, []);
 
   const selectFactoryId = (id) => {
@@ -34,8 +38,14 @@ function Home() {
       getTotalFinance(response.data);
       setFactoryData(response.data);
       let tmpIdx = response.data.findIndex((v) => v.status === true);
-      window.localStorage.setItem('factory_id', response.data[tmpIdx]?.id);
-      setFId(() => response.data[tmpIdx]?.id);
+      if (tmpIdx !== -1) {
+        if (window.localStorage.getItem('factory_id') == null) {
+          window.localStorage.setItem('factory_id', response.data[tmpIdx]?.id);
+          setFId(() => response.data[tmpIdx]?.id);
+        } else {
+          setFId(() => Number(window.localStorage.getItem('factory_id')));
+        }
+      }
     } catch (error) {
       console.error(error);
     }
